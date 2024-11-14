@@ -24,6 +24,13 @@ def load_data():
 
 data = load_data()
 
+def load_group():
+    # Replace this with your data loading code
+    group = pd.read_csv('Res Score with Cus Group.csv')
+    return group
+
+group = load_group()
+
 # Helper functions
 def classify_risk(resilience_score):
     if resilience_score < -0.5:
@@ -314,9 +321,10 @@ st.subheader("🌍 Peer Benchmarking")
 
 st.info("💡 Peer Benchmarking compares your Resilience Score with similar customers to assess your financial resilience. A higher score than peers suggests stronger resilience. Scores below a certain percentile (e.g., below 25th percentile) may indicate lower resilience and areas for improvement.")
 
-tab1, tab2, tab3 = st.tabs(["Overall Performance", "Business Banking", "Retailers"])
+tab1, tab2, tab3 = st.tabs(["Overall Performance", "Retailers", "Business Banking"])
 
 with tab1:
+    st.write(f"**Benchmarking Against All Peers**")
      # Adding explanation for Peer Benchmarking
     with st.expander("How do you interpret your perfomance in the boxplot?"):
         st.write("""
@@ -340,7 +348,7 @@ with tab1:
     st.pyplot(fig)
 
 # Explanation of Radar Chart Benchmarking
-    with st.expander("How do you interpret your performance in a radar chart?"):
+    with st.expander("How do you interpret your performance in the radar chart?"):
         st.write("""
         The radar chart visualizes your performance on different financial metrics relative to the peer average.
     
@@ -379,8 +387,159 @@ with tab1:
     plot_radar_chart(score_values, peer_means, scores)
 
 with tab2:
-    st.header("A dog")
-    st.image("https://static.streamlit.io/examples/dog.jpg", width=200)
+    # Define the metrics to benchmark and get customer scores
+    scores = ['Financial Health_Score', 'Credit Reliability_Score', 'Customer Engagement_Score', 
+          'Socioeconomic Stability_Score']
+    customer_scores = customer_data[scores].values
+    resilience_score = customer_data['Resilience_Score']
+
+    # Loop through both 'Retail' and 'Business Banking' groups for peer benchmarking
+    for segment in ['RETAIL']:
+        
+        # Filter peers in the current group
+        peer_data = data[(group['CUSTOMER_GROUP'] == segment) &
+                         (group['CUSTOMER_LOCATION'] == customer_data['CUSTOMER_LOCATION']) &
+                         (group['CUSTOMER_SEGMENT'] == customer_data['CUSTOMER_SEGMENT'])]
+        
+        # Display the group being benchmarked
+        st.write(f"**Benchmarking Against the Retail Group**")
+        
+        # Box Plot for Resilience Score Comparison
+        with st.expander(f"How to interpret your performance in the boxplot for the retail group?"):
+            st.write("""
+                     **How to interpret the boxplot:**  
+                     - The box represents the middle 50% of peer scores (between the 25th and 75th percentile).
+                     - The dashed line indicates your current Resilience Score. A score above the box shows strong resilience relative to peers.
+                     - A score within or below the box might suggest improvement areas.
+                     """)
+            
+        # Plotting Resilience Score comparison for each customer group
+        fig, ax = plt.subplots(figsize=(8, 4))
+        sns.boxplot(x=peer_data['Resilience_Score'], color='lightgrey', ax=ax)
+        ax.axvline(resilience_score, color='darkgreen', linestyle='--', label='Customer Score')
+        ax.set_title(f"Resilience Score Comparison with Retail Group", fontsize=14, fontweight='bold', color="darkgreen")
+        ax.set_xlabel("Resilience Score", fontsize=12, fontweight='bold', color="darkgreen")
+        ax.legend(loc='upper right')
+        st.pyplot(fig)
+            
+            # Explanation of the radar chart for each group
+        with st.expander("How do you interpret your performance in the radar chart for the retail group?"):
+            st.write("""
+                     The radar chart visualizes your performance on different financial metrics relative to the peer average.
+                     
+                     **How to interpret the radar chart:**
+                     - The green area represents your scores across various metrics.
+                     - The grey area shows the peer average. Areas where your green shape is outside the grey indicate strengths compared to peers.
+                     - If your scores are consistently within the peer average, consider targeting those areas for improvement.
+                     """)
+                
+        # Radar Chart for Comparative Analysis with Peers in the Current Group
+        def plot_radar_chart(scores, peer_means, labels, segment):
+            fig, ax = plt.subplots(figsize=(6, 6), subplot_kw={'projection': 'polar'})
+            angles = np.linspace(0, 2 * np.pi, len(labels), endpoint=False).tolist()
+                
+            # Complete the loop for radar chart
+            scores = np.concatenate((scores, [scores[0]]))
+            peer_means = np.concatenate((peer_means, [peer_means[0]]))
+            angles += angles[:1]
+                
+            # Plotting the radar chart for customer and peers
+            sns.set_palette("Greens")
+            ax.plot(angles, scores, 'o-', color='darkgreen', label='Customer')
+            ax.fill(angles, scores, color='green', alpha=0.25)
+                
+            ax.plot(angles, peer_means, 'o-', color='grey', label='Peer Average')
+            ax.fill(angles, peer_means, color='grey', alpha=0.25)
+                
+            # Styling the radar chart
+            ax.set_yticklabels([])  # Hides radial labels for a cleaner look
+            ax.set_xticks(angles[:-1])
+            ax.set_xticklabels(labels, fontsize=10, fontweight='bold', color="darkgreen")
+            ax.set_title(f"Comparative Radar Chart of Component Scores for Retail Group", fontsize=14, fontweight='bold', color="darkgreen")
+            ax.legend(loc='upper right')
+            st.pyplot(fig)
+
+    # Calculate peer means for the current group
+    peer_means = peer_data[scores].mean().values
+    
+    # Plot radar chart for current group
+    plot_radar_chart(customer_scores, peer_means, scores, group)
+
 with tab3:
-    st.header("An owl")
-    st.image("https://static.streamlit.io/examples/owl.jpg", width=200)
+    # Define the metrics to benchmark and get customer scores
+    scores = ['Financial Health_Score', 'Credit Reliability_Score', 'Customer Engagement_Score', 
+          'Socioeconomic Stability_Score']
+    customer_scores = customer_data[scores].values
+    resilience_score = customer_data['Resilience_Score']
+
+    # Loop through both 'Retail' and 'Business Banking' groups for peer benchmarking
+    for segment in ['BUSINESS BANKING']:
+        
+        # Filter peers in the current group
+        peer_data = data[(group['CUSTOMER_GROUP'] == segment) &
+                         (group['CUSTOMER_LOCATION'] == customer_data['CUSTOMER_LOCATION']) &
+                         (group['CUSTOMER_SEGMENT'] == customer_data['CUSTOMER_SEGMENT'])]
+        
+        # Display the group being benchmarked
+        st.write(f"**Benchmarking Against the Business Banking Group**")
+        
+        # Box Plot for Resilience Score Comparison
+        with st.expander(f"How to do you interpret your performance in the boxplot for the business banking group?"):
+            st.write("""
+                     **How to interpret the boxplot:**  
+                     - The box represents the middle 50% of peer scores (between the 25th and 75th percentile).
+                     - The dashed line indicates your current Resilience Score. A score above the box shows strong resilience relative to peers.
+                     - A score within or below the box might suggest improvement areas.
+                     """)
+            
+        # Plotting Resilience Score comparison for each customer group
+        fig, ax = plt.subplots(figsize=(8, 4))
+        sns.boxplot(x=peer_data['Resilience_Score'], color='lightgrey', ax=ax)
+        ax.axvline(resilience_score, color='darkgreen', linestyle='--', label='Customer Score')
+        ax.set_title(f"Resilience Score Comparison with Business Banking Group", fontsize=14, fontweight='bold', color="darkgreen")
+        ax.set_xlabel("Resilience Score", fontsize=12, fontweight='bold', color="darkgreen")
+        ax.legend(loc='upper right')
+        st.pyplot(fig)
+            
+            # Explanation of the radar chart for each group
+        with st.expander("How to interpret your peformance in the radar chart for the business banking group?"):
+            st.write("""
+                     The radar chart visualizes your performance on different financial metrics relative to the peer average.
+                     
+                     **How to interpret the radar chart:**
+                     - The green area represents your scores across various metrics.
+                     - The grey area shows the peer average. Areas where your green shape is outside the grey indicate strengths compared to peers.
+                     - If your scores are consistently within the peer average, consider targeting those areas for improvement.
+                     """)
+                
+        # Radar Chart for Comparative Analysis with Peers in the Current Group
+        def plot_radar_chart(scores, peer_means, labels, segment):
+            fig, ax = plt.subplots(figsize=(6, 6), subplot_kw={'projection': 'polar'})
+            angles = np.linspace(0, 2 * np.pi, len(labels), endpoint=False).tolist()
+                
+            # Complete the loop for radar chart
+            scores = np.concatenate((scores, [scores[0]]))
+            peer_means = np.concatenate((peer_means, [peer_means[0]]))
+            angles += angles[:1]
+                
+            # Plotting the radar chart for customer and peers
+            sns.set_palette("Greens")
+            ax.plot(angles, scores, 'o-', color='darkgreen', label='Customer')
+            ax.fill(angles, scores, color='green', alpha=0.25)
+                
+            ax.plot(angles, peer_means, 'o-', color='grey', label='Peer Average')
+            ax.fill(angles, peer_means, color='grey', alpha=0.25)
+                
+            # Styling the radar chart
+            ax.set_yticklabels([])  # Hides radial labels for a cleaner look
+            ax.set_xticks(angles[:-1])
+            ax.set_xticklabels(labels, fontsize=10, fontweight='bold', color="darkgreen")
+            ax.set_title(f"Comparative Radar Chart of Component Scores for Business Banking Group", fontsize=14, fontweight='bold', color="darkgreen")
+            ax.legend(loc='upper right')
+            st.pyplot(fig)
+
+    # Calculate peer means for the current group
+    peer_means = peer_data[scores].mean().values
+    
+    # Plot radar chart for current group
+    plot_radar_chart(customer_scores, peer_means, scores, group)
