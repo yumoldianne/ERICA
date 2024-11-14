@@ -68,6 +68,22 @@ st.sidebar.info("""Please note that this dashboard is a prototype.
                 make no warranties or guarantees regarding its performance, 
                 reliability, or suitability for any specific purpose.""")
 
+with st.sidebar:
+        st.caption('Developed by MisSME?')
+        col1, col2, col3, col4 = st.columns([0.05,0.05,0.05,0.15])
+        with col1:
+            st.markdown("""<a href="https://github.com/yumoldianne/ERICA">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png?20180806170715" 
+                width="30" height="30"></a>""", unsafe_allow_html=True)
+        with col2:
+            st.markdown("""<a href="https://docs.google.com/document/d/1eu39rT-Zh6KhUNwXrAzOwdOJv0_lz3IDv4X_GEmaDsA/edit?usp=sharing">
+                <img src="https://i.pinimg.com/736x/cc/ff/60/ccff6049e906fb0e1f5babe20db1a065.jpg" 
+                width="30" height="30"></a>""", unsafe_allow_html=True)
+        #with col3:
+            #st.markdown("""<a href="https://www.instagram.com/eltgnd_v/">
+                #<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/2048px-Instagram_logo_2016.svg.png" 
+                #width="30" height="30"></a>""", unsafe_allow_html=True)
+
 st.header("1. Risk Assessment Summary")
 customer_data = data[data['CUSTOMER_ID'] == selected_customer].iloc[0]
 resilience_score = customer_data['Resilience_Score']
@@ -128,7 +144,7 @@ for factor, threshold in factor_thresholds.items():
 st.header("2. Actionable Recommendations")
 
 # Explanation dropdown for Actionable Recommendations
-with st.expander("How Actionable Recommendations Work"):
+with st.expander("What are actionable recommendations?"):
     st.write("""
     Actionable recommendations are provided based on the MSME's indicators, helping to improve financial resilience. Here’s how these recommendations are tailored:
     
@@ -233,54 +249,64 @@ with st.expander("What is Peer Benchmarking?"):
     - A score within or below the box might suggest improvement areas.
     """)
 
-# Filter by location and segment to compare with peers
-peer_data = data[(data['CUSTOMER_LOCATION'] == customer_data['CUSTOMER_LOCATION']) &
+tab1, tab2, tab3 = st.tabs(["Overall Performance", "Business Banking", "Retailers"])
+
+with tab1:
+     #Filter by location and segment to compare with peers
+    peer_data = data[(data['CUSTOMER_LOCATION'] == customer_data['CUSTOMER_LOCATION']) &
                  (data['CUSTOMER_SEGMENT'] == customer_data['CUSTOMER_SEGMENT'])]
 
-# Plotting Resilience Score comparison
-fig, ax = plt.subplots(figsize=(8, 4))
-sns.boxplot(x=peer_data['Resilience_Score'], color='lightgrey', ax=ax)
-ax.axvline(resilience_score, color='darkgreen', linestyle='--', label='Customer Score')
-ax.set_title("Resilience Score Comparison with Peers", fontsize=14, fontweight='bold', color="darkgreen")
-ax.set_xlabel("Resilience Score", fontsize=12, fontweight='bold', color="darkgreen")
-ax.legend(loc='upper right')
-st.pyplot(fig)
-
-def plot_radar_chart(scores, peer_means, labels):
-    fig, ax = plt.subplots(figsize=(6, 6), subplot_kw={'projection': 'polar'})
-    angles = np.linspace(0, 2 * np.pi, len(labels), endpoint=False).tolist()
-
-    # Complete the loop for radar chart
-    scores = np.concatenate((scores, [scores[0]]))
-    peer_means = np.concatenate((peer_means, [peer_means[0]]))
-    angles += angles[:1]
-
-    # Plotting the radar chart for customer and peers
-    sns.set_palette("Greens")
-    ax.plot(angles, scores, 'o-', color='darkgreen', label='Customer')
-    ax.fill(angles, scores, color='green', alpha=0.25)
-
-    ax.plot(angles, peer_means, 'o-', color='grey', label='Peer Average')
-    ax.fill(angles, peer_means, color='grey', alpha=0.25)
-
-    # Styling the radar chart
-    ax.set_yticklabels([])  # Hides radial labels for a cleaner look
-    ax.set_xticks(angles[:-1])
-    ax.set_xticklabels(labels, fontsize=10, fontweight='bold', color="darkgreen")
-    ax.set_title("Comparative Radar Chart of Component Scores", fontsize=14, fontweight='bold', color="darkgreen")
+    # Plotting Resilience Score comparison
+    fig, ax = plt.subplots(figsize=(8, 4))
+    sns.boxplot(x=peer_data['Resilience_Score'], color='lightgrey', ax=ax)
+    ax.axvline(resilience_score, color='darkgreen', linestyle='--', label='Customer Score')
+    ax.set_title("Resilience Score Comparison with Peers", fontsize=14, fontweight='bold', color="darkgreen")
+    ax.set_xlabel("Resilience Score", fontsize=12, fontweight='bold', color="darkgreen")
     ax.legend(loc='upper right')
     st.pyplot(fig)
 
-peer_means = peer_data[scores].mean().values
-plot_radar_chart(score_values, peer_means, scores)
-
 # Explanation of Radar Chart Benchmarking
-with st.expander("Understanding the Radar Chart"):
-    st.write("""
-    The radar chart visualizes your performance on different financial metrics relative to the peer average.
+    with st.expander("How do you interpret a radar chart?"):
+        st.write("""
+        The radar chart visualizes your performance on different financial metrics relative to the peer average.
     
-    **How to interpret the radar chart:**
-    - The green area represents your scores across various metrics.
-    - The grey area shows the peer average. Areas where your green shape is outside the grey indicate strengths compared to peers.
-    - If your scores are consistently within the peer average, consider targeting those areas for improvement.
-    """)
+        **How to interpret the radar chart:**
+        - The green area represents your scores across various metrics.
+        - The grey area shows the peer average. Areas where your green shape is outside the grey indicate strengths compared to peers.
+        - If your scores are consistently within the peer average, consider targeting those areas for improvement.
+        """)
+
+    def plot_radar_chart(scores, peer_means, labels):
+        fig, ax = plt.subplots(figsize=(6, 6), subplot_kw={'projection': 'polar'})
+        angles = np.linspace(0, 2 * np.pi, len(labels), endpoint=False).tolist()
+
+        # Complete the loop for radar chart
+        scores = np.concatenate((scores, [scores[0]]))
+        peer_means = np.concatenate((peer_means, [peer_means[0]]))
+        angles += angles[:1]
+
+        # Plotting the radar chart for customer and peers
+        sns.set_palette("Greens")
+        ax.plot(angles, scores, 'o-', color='darkgreen', label='Customer')
+        ax.fill(angles, scores, color='green', alpha=0.25)
+
+        ax.plot(angles, peer_means, 'o-', color='grey', label='Peer Average')
+        ax.fill(angles, peer_means, color='grey', alpha=0.25)
+
+        # Styling the radar chart
+        ax.set_yticklabels([])  # Hides radial labels for a cleaner look
+        ax.set_xticks(angles[:-1])
+        ax.set_xticklabels(labels, fontsize=10, fontweight='bold', color="darkgreen")
+        ax.set_title("Comparative Radar Chart of Component Scores", fontsize=14, fontweight='bold', color="darkgreen")
+        ax.legend(loc='upper right')
+        st.pyplot(fig)
+
+    peer_means = peer_data[scores].mean().values
+    plot_radar_chart(score_values, peer_means, scores)
+
+with tab2:
+    st.header("A dog")
+    st.image("https://static.streamlit.io/examples/dog.jpg", width=200)
+with tab3:
+    st.header("An owl")
+    st.image("https://static.streamlit.io/examples/owl.jpg", width=200)
