@@ -11,9 +11,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-st.title("ERICA ⚙️")
+st.title("⚙️ ERICA ")
 
-st.write("Economic Resilience Index for Capacity Adaptation or ERICA is designed to assess and enhance the financial resilience of MSMEs, particularly in underserved regions and vulnerable sectors like agriculture. The goal is to help these MSMEs withstand economic shocks such as crises or natural disasters by providing financial institutions with a comprehensive understanding of the extent of each MSME’s resilience.")
+st.info("💡 Economic Resilience Index for Capacity Adaptation or ERICA is designed to assess and enhance the financial resilience of MSMEs, particularly in underserved regions and vulnerable sectors like agriculture. The goal is to help these MSMEs withstand economic shocks such as crises or natural disasters by providing financial institutions with a comprehensive understanding of the extent of each MSME’s resilience.")
 
 # Load the data
 @st.cache_data
@@ -37,28 +37,30 @@ def classify_risk(resilience_score):
 #st.title("MSME Financial Resilience Dashboard")
 
 # Step 1: Resilience Score Calculation
-st.header("Economic Resilience Score Calculation")
+st.subheader("📈 Economic Resilience Score Calculation")
+
+st.info("💡 The Economic Resilience Score is a composite indicator that assesses the financial resilience of an MSME.")
 
 # Explanation dropdown for Resilience Score
 with st.expander("How does the Economic Resilience Score work?"):
     st.write("""
-    The Economic Resilience Score is a composite indicator that assesses the financial resilience of an MSME. 
+    
     It is calculated by analyzing several key metrics:
+    
     - **Financial Health**: Evaluates the liquidity and stability of the MSME’s finances.
     - **Credit Reliability**: Considers the consistency and reliability in loan repayments.
     - **Customer Engagement**: Measures interaction levels with banking products.
     - **Socioeconomic Stability**: Takes into account the broader economic environment the MSME operates in.
     
-    These components are combined using a weighted formula to produce a Resilience Score, which indicates the MSME’s ability to withstand economic shocks.
+    These components are combined using a weighted formula to produce a Resilience Score, which indicates the MSME’s ability to withstand economic shocks. 
+    
     **Thresholds for Resilience Score**:
     - A score below **-0.5** is considered low, indicating that the MSME may be vulnerable to financial shocks and lacks the financial stability to weather economic downturns.
     - Scores between **-0.5 and 0.5** are moderate, suggesting that the MSME has some resilience but may need improvements in certain areas.
     - A score above **0.5** is considered high, indicating strong financial resilience and stability.
-
-    These components are combined using a weighted formula to produce the final Resilience Score, which highlights the MSME’s ability to withstand economic pressures.
     """)
 
-st.sidebar.header("Risk Assessment Filter")
+st.sidebar.subheader("Risk Assessment Filter")
 selected_customer = st.sidebar.selectbox("Select Customer ID", data['CUSTOMER_ID'].unique())
 
 st.sidebar.info("""Please note that this dashboard is a prototype. 
@@ -84,13 +86,13 @@ with st.sidebar:
                 #<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/2048px-Instagram_logo_2016.svg.png" 
                 #width="30" height="30"></a>""", unsafe_allow_html=True)
 
-st.header("1. Risk Assessment Summary")
+st.subheader("⚡ Risk Assessment Summary")
 customer_data = data[data['CUSTOMER_ID'] == selected_customer].iloc[0]
 resilience_score = customer_data['Resilience_Score']
 risk_level = classify_risk(resilience_score)
 
-st.write(f"Risk Level: {risk_level}")
-st.write(f"Resilience Score: {resilience_score:.2f}")
+st.write(f"Risk Level: **{risk_level}**")
+st.write(f"Resilience Score: **{resilience_score:.2f}**")
 
 # Visualize contributions of each component score to the Resilience Score
 scores = ['Financial Health_Score', 'Credit Reliability_Score', 'Customer Engagement_Score', 'Socioeconomic Stability_Score']
@@ -128,25 +130,28 @@ for factor, threshold in factor_thresholds.items():
     score = customer_data[factor]
     if score < threshold:
         if factor == 'Financial Health_Score':
-            st.write("- **Financial Health**: Low financial health score may indicate insufficient cash flow or limited income stability. Consider strategies like cash flow monitoring and budgeting.")
+            st.write("❗ **Financial Health**: Low financial health score may indicate insufficient cash flow or limited income stability. Consider strategies like cash flow monitoring and budgeting.")
         elif factor == 'Credit Reliability_Score':
-            st.write("- **Credit Reliability**: Low credit reliability score suggests inconsistent loan or credit repayment behavior. Improving repayment practices can strengthen this score.")
+            st.write("❗ **Credit Reliability**: Low credit reliability score suggests inconsistent loan or credit repayment behavior. Improving repayment practices can strengthen this score.")
         elif factor == 'Customer Engagement_Score':
-            st.write("- **Customer Engagement**: Low engagement with banking or financial products might imply underuse of resources. Increase usage of available services for better resilience.")
+            st.write("❗ **Customer Engagement**: Low engagement with banking or financial products might imply underuse of resources. Increase usage of available services for better resilience.")
         elif factor == 'Socioeconomic Stability_Score':
-            st.write("- **Socioeconomic Stability**: A low socioeconomic stability score can suggest external risks. Strengthening financial stability with a savings plan can mitigate some risks.")
+            st.write("❗ **Socioeconomic Stability**: A low socioeconomic stability score can suggest external risks. Strengthening financial stability with a savings plan can mitigate some risks.")
 
     else:
         # If the score is above the threshold, provide a congratulatory message
         st.write(f"✅ **{factor.replace('_', ' ').title()}**: Your score looks good! You're on the right track in this area.")
 
 # 5. Actionable Recommendations & Risk Mitigation Suggestions
-st.header("2. Actionable Recommendations")
+st.subheader("📑 Actionable Recommendations")
+
+st.info("💡 Actionable recommendations are provided based on the MSME's indicators, helping to improve financial resilience.")
 
 # Explanation dropdown for Actionable Recommendations
 with st.expander("What are actionable recommendations?"):
     st.write("""
-    Actionable recommendations are provided based on the MSME's indicators, helping to improve financial resilience. Here’s how these recommendations are tailored:
+    
+    Here’s how these recommendations are tailored:
     
     - **Loan Indicators**: If an MSME has active loans, such as auto or housing loans, they are assessed for restructuring options. 
       - MSMEs with multiple active loans or recent missed payments are recommended to explore extended payment terms or restructuring. 
@@ -162,7 +167,7 @@ housing_loan_indicator = customer_data.get('HOUSING_LOAN_INDICATOR', None)
 
 if auto_loan_indicator == 1 or housing_loan_indicator == 1:
     st.subheader("Loan Modification Options")
-    st.write("""It appears that your business has active loans. Managing these responsibly is crucial for maintaining resilience:
+    st.write("""❗ **Loan Indicator**: It appears that your business has active loans. Managing these responsibly is crucial for maintaining resilience:
     
     - **Restructure Loans**: Consider negotiating extended payment terms or lower interest rates with lenders. Doing so can free up cash flow to invest in business operations.
     - **Avoid Over-borrowing**: If loan repayments are high (over 20 percent of monthly revenue), we suggest reducing reliance on credit to minimize the risk of default.
@@ -177,7 +182,7 @@ else:
 # Additional components for savings recommendations
 if customer_data.get('SAVINGS_ACCOUNT_INDICATOR', 0) == 0:
     st.subheader("Savings Recommendations")
-    st.write("""It seems that you do not currently have an active savings account. Building a financial buffer can significantly enhance resilience:
+    st.write("""❗**Savings Account Indicator**: It seems that you do not currently have an active savings account. Building a financial buffer can significantly enhance resilience:
     
     - **Establish a Savings Fund**: Aim to save enough for at least **3 months of operating expenses**. This fund can protect against unexpected costs or economic slowdowns.
     - **Automate Savings Contributions**: Set aside a percentage of monthly revenue to grow your savings incrementally.
@@ -206,18 +211,22 @@ with st.expander("Understanding Customer Engagement Score"):
 # Example of using Customer Engagement Score for recommendation
 if customer_data.get('CUSTOMER_ENGAGEMENT_SCORE', 0) < 0.5:
     st.subheader("Engagement Enhancement")
-    st.write("""Your engagement with financial services appears to be low. Increasing engagement can offer greater stability and access to resources:""")
+    st.write("""
+    
+    ❗**Customer Engagament Score**: Your engagement with financial services appears to be low. Increasing engagement can offer greater stability and access to resources:
+    
+    - **Explore Digital Banking Options**: Digital products can streamline access to essential banking services, making it easier to manage finances on the go.
+    - **Utilize Financial Management Tools**: Many banks offer budgeting tools and analytics to help track cash flow, income, and expenses more effectively.
+    - **Consider Additional Products**: Speak with a financial advisor to explore products like business credit lines or insurance options that provide added security and flexibility.
+    
+    Increasing engagement with financial services can boost resilience by providing your business with access to supportive tools and resources.
+    
+    """)
 
 else:
         # If the score is above the threshold, provide a congratulatory message
         st.write(f"✅ *Customer Engagament Score**: Your engagement with financial services appears to be high! You're on the right track in this area.")
 
-# Add the following later
-#    - **Explore Digital Banking Options**: Digital products can streamline access to essential banking services, making it easier to manage finances on the go.
-#    - **Utilize Financial Management Tools**: Many banks offer budgeting tools and analytics to help track cash flow, income, and expenses more effectively.
-#    - **Consider Additional Products**: Speak with a financial advisor to explore products like business credit lines or insurance options that provide added security and flexibility.
-    
-#    Increasing engagement with financial services can boost resilience by providing your business with access to supportive tools and resources.
 
 # Final Summary of Recommendations
 st.subheader("Summary of Recommendations")
@@ -232,15 +241,12 @@ if customer_data.get('CUSTOMER_ENGAGEMENT_SCORE', 0) < 0.5:
     st.write("- Enhance engagement with digital products.")
 
 # 6. Peer Benchmarking
-st.header("3. Peer Benchmarking")
+st.subheader("🌍 Peer Benchmarking")
+
+st.info("💡 Peer Benchmarking compares your Resilience Score with similar customers to assess your financial resilience. A higher score than peers suggests stronger resilience. Scores below a certain percentile (e.g., below 25th percentile) may indicate lower resilience and areas for improvement.")
 
 # Adding explanation for Peer Benchmarking
-with st.expander("What is Peer Benchmarking?"):
-    st.write("""
-    Peer Benchmarking compares your Resilience Score with similar customers to assess your financial resilience. 
-    A higher score than peers suggests stronger resilience. Scores below a certain percentile (e.g., below 25th percentile) 
-    may indicate lower resilience and areas for improvement.
-    """)
+with st.expander("How do you interpret your perfomance in the boxplot?"):
 
     st.write("""
     **How to interpret the boxplot:**  
@@ -266,7 +272,7 @@ with tab1:
     st.pyplot(fig)
 
 # Explanation of Radar Chart Benchmarking
-    with st.expander("How do you interpret a radar chart?"):
+    with st.expander("How do you interpret your performance in a radar chart?"):
         st.write("""
         The radar chart visualizes your performance on different financial metrics relative to the peer average.
     
