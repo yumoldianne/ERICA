@@ -13,7 +13,7 @@ st.set_page_config(
 
 st.title("⚙️ ERICA ")
 
-st.info("💡 Economic Resilience Index for Capacity Adaptation or ERICA is designed to assess and enhance the financial resilience of MSMEs, particularly in underserved regions and vulnerable sectors like agriculture. The goal is to help these MSMEs withstand economic shocks such as crises or natural disasters by providing financial institutions with a comprehensive understanding of the extent of each MSME’s resilience.")
+st.info("💡 **Economic Resilience Index for Capacity Adaptation or ERICA** is designed to assess and enhance the financial resilience of MSMEs, particularly in underserved regions and vulnerable sectors like agriculture. The goal is to help these MSMEs withstand economic shocks such as crises or natural disasters by providing financial institutions with a comprehensive understanding of the extent of each MSME’s resilience.")
 
 # Load the data
 @st.cache_data
@@ -52,7 +52,7 @@ with st.expander("How does the Economic Resilience Score work?"):
     - **Customer Engagement**: Measures interaction levels with banking products.
     - **Socioeconomic Stability**: Takes into account the broader economic environment the MSME operates in.
     
-    These components are combined using a weighted formula to produce a Resilience Score, which indicates the MSME’s ability to withstand economic shocks. 
+    These components are combined using a mean aggregation to produce a Resilience Score, which indicates the MSME’s ability to withstand economic shocks. 
     
     **Thresholds for Resilience Score**:
     - A score below **-0.5** is considered low, indicating that the MSME may be vulnerable to financial shocks and lacks the financial stability to weather economic downturns.
@@ -79,7 +79,7 @@ with st.sidebar:
                 width="30" height="30"></a>""", unsafe_allow_html=True)
         with col2:
             st.markdown("""<a href="https://docs.google.com/document/d/1eu39rT-Zh6KhUNwXrAzOwdOJv0_lz3IDv4X_GEmaDsA/edit?usp=sharing">
-                <img src="https://i.pinimg.com/736x/cc/ff/60/ccff6049e906fb0e1f5babe20db1a065.jpg" 
+                <img src="https://cdn-icons-png.flaticon.com/512/482/482202.png" 
                 width="30" height="30"></a>""", unsafe_allow_html=True)
         #with col3:
             #st.markdown("""<a href="https://www.instagram.com/eltgnd_v/">
@@ -141,6 +141,75 @@ for factor, threshold in factor_thresholds.items():
     else:
         # If the score is above the threshold, provide a congratulatory message
         st.write(f"✅ **{factor.replace('_', ' ').title()}**: Your score looks good! You're on the right track in this area.")
+
+# Step 4: Resilience Score Calculation
+st.subheader("🧮 Target Resilience Score Calculator")
+
+st.info("💡 The Target Resilience Score Calculator computes how much each component score should ideally increase to reach the target resilience score. This lets MSMEs focus on the specific areas that can most effectively strengthen their resilience.")
+
+with st.expander("How does the Target Resilience Score Calculator work?"):
+    st.write("""
+             
+             Your current resilience score is calculated based on four key components: Financial Health, Credit Reliability, Customer Engagement, Socioeconomic Stability. Together, these components create a single resilience score, giving a snapshot of financial resilience.
+             
+             You can set a target resilience score—a goal to help your business become more financially stable. The calculator will then tell you if you’ve already achieved it or if improvements are needed.
+
+             If your current score meets or exceeds your target, the calculator will confirm that you’re on the right track. If not, it calculates the gap and suggests ways to bridge it.
+
+             """)
+
+# Inputs: Current and Target Resilience Score
+st.write(f"Your calculated current resilience score is: {resilience_score:.2f}")
+
+st.write("Your score for each of the components can be found below:")
+
+financial_health_score = customer_data['Financial Health_Score']
+credit_reliability_score = customer_data['Credit Reliability_Score']
+customer_engagement_score = customer_data['Customer Engagement_Score']
+socioeconomic_stability_score = customer_data['Socioeconomic Stability_Score']
+
+st.write(f"Financial Health Score: {financial_health_score:.2f}")
+st.write(f"Credit Reliability Score: {credit_reliability_score:.2f}")
+st.write(f"Customer Engagement Score: {customer_engagement_score:.2f}")
+st.write(f"Socioeconomic Stability Score: {socioeconomic_stability_score:.2f}")
+
+target_resilience_score = st.number_input("Enter your target resilience score", min_value=-1.0, max_value=1.0, step=0.01)
+
+# Calculate the difference and feasibility
+score_difference = target_resilience_score - resilience_score
+
+# Check if the target score is achievable based on the score difference
+if score_difference <= 0:
+    st.write("Your scores look good! You've already reached or exceeded your target resilience score.")
+else:
+    st.write(f"To reach your target resilience score of {target_resilience_score}, you need to increase your overall resilience score by {score_difference:.2f}.")
+
+    # Suggest improvements for each component
+    st.markdown("### Suggested Improvements to Reach Target Resilience Score")
+
+    # Required increment per component (assuming equal distribution of increase across components)
+    required_increase_per_component = score_difference / 4
+
+    # Display each component's current score with tailored recommendations
+    for factor, current_score in zip(
+        ["Financial Health", "Credit Reliability", "Customer Engagement", "Socioeconomic Stability"],
+        [financial_health_score, credit_reliability_score, customer_engagement_score, socioeconomic_stability_score]
+    ):
+        target_score_for_factor = current_score + required_increase_per_component
+        st.write(f"**{factor} Score**: Suggested Target = {target_score_for_factor:.2f}")
+
+#        if factor == "Financial Health":
+#            if current_score < target_score_for_factor:
+#                st.write("🪙 Consider enhancing your financial health.")
+#        elif factor == "Credit Reliability":
+#            if current_score < target_score_for_factor:
+#                st.write("💳 Focus on improving credit reliability.")
+#        elif factor == "Customer Engagement":
+#            if current_score < target_score_for_factor:
+#                st.write("🫂 Increase interactions with banking products, like digital tools and resources, to boost engagement.")
+#        elif factor == "Socioeconomic Stability":
+#            if current_score < target_score_for_factor:
+#                st.write("🏦 Building a savings plan can improve resilience against economic challenges.")
 
 # 5. Actionable Recommendations & Risk Mitigation Suggestions
 st.subheader("📑 Actionable Recommendations")
@@ -245,19 +314,18 @@ st.subheader("🌍 Peer Benchmarking")
 
 st.info("💡 Peer Benchmarking compares your Resilience Score with similar customers to assess your financial resilience. A higher score than peers suggests stronger resilience. Scores below a certain percentile (e.g., below 25th percentile) may indicate lower resilience and areas for improvement.")
 
-# Adding explanation for Peer Benchmarking
-with st.expander("How do you interpret your perfomance in the boxplot?"):
-
-    st.write("""
-    **How to interpret the boxplot:**  
-    - The box represents the middle 50% of peer scores (between the 25th and 75th percentile).
-    - The dashed line indicates your current Resilience Score. A score above the box shows strong resilience relative to peers.
-    - A score within or below the box might suggest improvement areas.
-    """)
-
 tab1, tab2, tab3 = st.tabs(["Overall Performance", "Business Banking", "Retailers"])
 
 with tab1:
+     # Adding explanation for Peer Benchmarking
+    with st.expander("How do you interpret your perfomance in the boxplot?"):
+        st.write("""
+                 **How to interpret the boxplot:**  
+                 - The box represents the middle 50% of peer scores (between the 25th and 75th percentile).
+                 - The dashed line indicates your current Resilience Score. A score above the box shows strong resilience relative to peers.
+                 - A score within or below the box might suggest improvement areas.
+                 """)
+     
      #Filter by location and segment to compare with peers
     peer_data = data[(data['CUSTOMER_LOCATION'] == customer_data['CUSTOMER_LOCATION']) &
                  (data['CUSTOMER_SEGMENT'] == customer_data['CUSTOMER_SEGMENT'])]
