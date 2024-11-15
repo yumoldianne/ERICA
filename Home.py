@@ -99,8 +99,9 @@ customer_data = data[data['CUSTOMER_ID'] == selected_customer].iloc[0]
 resilience_score = customer_data['Resilience_Score']
 risk_level = classify_risk(resilience_score)
 
-st.write(f"Risk Level: **{risk_level}**")
-st.write(f"Resilience Score: **{resilience_score:.2f}**")
+col1, col2 = st.columns(2)
+col1.metric("Resilience Score", f"{resilience_score:.2f}")
+col2.metric("Risk Level", risk_level)
 
 # Visualize contributions of each component score to the Resilience Score
 scores = ['Financial Health_Score', 'Credit Reliability_Score', 'Customer Engagement_Score', 'Socioeconomic Stability_Score']
@@ -176,10 +177,11 @@ credit_reliability_score = customer_data['Credit Reliability_Score']
 customer_engagement_score = customer_data['Customer Engagement_Score']
 socioeconomic_stability_score = customer_data['Socioeconomic Stability_Score']
 
-st.write(f"Financial Health Score: {financial_health_score:.2f}")
-st.write(f"Credit Reliability Score: {credit_reliability_score:.2f}")
-st.write(f"Customer Engagement Score: {customer_engagement_score:.2f}")
-st.write(f"Socioeconomic Stability Score: {socioeconomic_stability_score:.2f}")
+col1, col2, col3, col4 = st.columns([1.2, 1.2, 1.8, 2.0])
+col1.metric("Financial Health", f"{financial_health_score:.2f}")
+col2.metric("Credit Reliability", f"{credit_reliability_score:.2f}")
+col3.metric("Customer Engagement", f"{customer_engagement_score:.2f}")
+col4.metric("Socioeconomic Stability", f"{socioeconomic_stability_score:.2f}")
 
 target_resilience_score = st.number_input("Enter your target resilience score", min_value=-1.0, max_value=1.0, step=0.01)
 
