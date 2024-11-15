@@ -54,19 +54,17 @@ st.write("""
          
          The `Economic Resilience Score` aggregates the concepts to create a composite score representing a customer’s ability to handle financial disruptions. This score is used in peer comparisons to contextualize the customer’s performance.
          
-         The `Risk Assessment Summary` identifies potential financial risks by highlighting areas where the customer’s scores fall below benchmarks. It provides a quick, color-coded overview of high-risk areas, helping users prioritize improvement actions.
+         The `Financial Risk Assessment Summary` quickly assesses a customer's overall financial resilience and risk level. It sees which specific areas (e.g., financial health, credit reliability) contribute most or least to the resilience score and users will receive targeted advice or positive reinforcement based on the scores, making it clear where improvements could be made or where the customer is doing well.
          
          The `Target Resilience Score Calculator` allows users to simulate the impact of changes in the concepts, helping set realistic performance targets. Users can test various scenarios to visualize how adjustments could improve the customer’s resilience score.
          
          `Peer Benchmarking` compares the customer’s resilience score and financial metrics against peers in similar Retail and Business Banking groups. This includes two visualizations, a box plot (displays the customer’s Resilience Score against peer scores), and radar chart (compares the customer’s performance across the concepts to the peer average, highlighting areas of strength and opportunities for improvement).
-         
-         `Resilience Score Predictor` predicts resilience scores for customers using three different machine learning models.
-         
+                  
          """)
 
 st.title("🐟 About MisSME?")
 
 st.write("""
-         MiSSME? (pronounced as miss me? as a play on words of MSMEs) is a group of four college students from Ateneo de Manila University.
+         MiSSME? (pronounced as *miss me?* is a play on words of MSMEs) is a group of four college students from Ateneo de Manila University.
          The team comprises of Zaidamin Haron (3 BS CTM), Andrea Senson (4 BS AMDSc), Rafael Tagulao (4 BS AMDSc), and Dianne Yumol (4 BS AMDSc).
          """)
