@@ -12,22 +12,21 @@ st.set_page_config(
 @st.cache_data
 def load_data():
     # Replace this with your data loading code
-    data = pd.read_csv('Resilience Score Analysis Unscaled.csv')
+    data = pd.read_csv('Resilience Score Analysis DF.csv')
     return data
 
 data = load_data()
-st.write(data)
 
 customer_data = data[data['CUSTOMER_ID'] == 17582714.2857]
 
 st.title("Actionable Recommendations & Risk Mitigation Suggestions")
 
 # Customer data variables
-monthly_income = customer_data['MONTHLY_INCOME']
-financial_health_score = customer_data['Financial Health_Score']#st.write(financial_health_score)
-credit_reliability_score = customer_data['Credit Reliability_Score']
-loan_amount = customer_data.get('LOAN_AMOUNT', 0)
-bank_tenure = customer_data.get('BANK_TENURE', 0)
+monthly_income = customer_data['MONTHLY_INCOME'].values[0]
+financial_health_score = customer_data['Financial Health_Score'].values[0]
+credit_reliability_score = customer_data['Credit Reliability_Score'].values[0]
+loan_amount = customer_data['LOAN_AMOUNT'].values[0] if 'LOAN_AMOUNT' in customer_data else 0
+bank_tenure = customer_data['BANK_TENURE'].values[0] if 'BANK_TENURE' in customer_data else 0
 
 # Dynamic calculation of loan suggested percentage of income based on financial health
 if financial_health_score > 0.75:
@@ -75,6 +74,7 @@ st.info("💡 Recommendations to improve financial resilience are provided based
 auto_loan_indicator = customer_data.get('AUTO_LOAN_INDICATOR', 0)
 housing_loan_indicator = customer_data.get('HOUSING_LOAN_INDICATOR', 0)
 
+st.write(auto_loan_indicator)
 if auto_loan_indicator == 1 or housing_loan_indicator == 1:
     st.subheader("Loan Modification Options")
     st.write(f"""❗ **Loan Indicator**: It appears that your business has active loans. 
