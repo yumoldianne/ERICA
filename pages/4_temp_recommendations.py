@@ -23,6 +23,7 @@ st.title("Actionable Recommendations & Risk Mitigation Suggestions")
 # Customer data variables
 monthly_income = customer_data['MONTHLY_INCOME']
 financial_health_score = customer_data['Financial Health_Score']
+#st.write(financial_health_score)
 credit_reliability_score = customer_data['Credit Reliability_Score']
 loan_amount = customer_data.get('LOAN_AMOUNT', 0)
 bank_tenure = customer_data.get('BANK_TENURE', 0)
