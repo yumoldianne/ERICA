@@ -140,13 +140,13 @@ for factor, threshold in factor_thresholds.items():
     score = customer_data[factor]
     if score < threshold:
         if factor == 'Financial Health_Score':
-            st.write("❗ **Financial Health**: Low financial health score may indicate insufficient cash flow or limited income stability. Consider strategies like cash flow monitoring and budgeting.")
+            st.write("❗ **Financial Health**: Low financial health score may indicate insufficient cash flow or limited income stability.")
         elif factor == 'Credit Reliability_Score':
-            st.write("❗ **Credit Reliability**: Low credit reliability score suggests inconsistent loan or credit repayment behavior. Improving repayment practices can strengthen this score.")
+            st.write("❗ **Credit Reliability**: Low credit reliability score suggests inconsistent loan or credit repayment behavior.")
         elif factor == 'Customer Engagement_Score':
-            st.write("❗ **Customer Engagement**: Low engagement with banking or financial products might imply underuse of resources. Increase usage of available services for better resilience.")
+            st.write("❗ **Customer Engagement**: Low engagement with banking or financial products might imply underuse of resources.")
         elif factor == 'Socioeconomic Stability_Score':
-            st.write("❗ **Socioeconomic Stability**: A low socioeconomic stability score can suggest external risks. Strengthening financial stability with a savings plan can mitigate some risks.")
+            st.write("❗ **Socioeconomic Stability**: A low socioeconomic stability score can suggest external risks.")
 
     else:
         # If the score is above the threshold, provide a congratulatory message
