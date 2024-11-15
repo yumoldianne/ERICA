@@ -13,7 +13,7 @@ st.set_page_config(
 
 st.title("⚙️ ERICA ")
 
-st.info("💡 **Economic Resilience Index for Capacity Adaptation or ERICA** is designed to assess and enhance the financial resilience of MSMEs, particularly in underserved regions and vulnerable sectors like agriculture. The goal is to help these MSMEs withstand economic shocks such as crises or natural disasters by providing financial institutions with a comprehensive understanding of the extent of each MSME’s resilience.")
+st.info("💡 **Economic Resilience Index for Capacity Adaptation or ERICA** is designed to assess and enhance the financial resilience of MSMEs, particularly in underserved regions and vulnerable sectors. The goal is to help these MSMEs withstand economic shocks such as crises or natural disasters by providing financial institutions with a comprehensive understanding of the extent of each MSME’s resilience.")
 
 # Load the data
 @st.cache_data
@@ -67,8 +67,9 @@ with st.expander("How does the Economic Resilience Score work?"):
     - A score above **0.5** is considered high, indicating strong financial resilience and stability.
     """)
 
-st.sidebar.subheader("Risk Assessment Filter")
+st.sidebar.subheader("Customer Information")
 selected_customer = st.sidebar.selectbox("Select Customer ID", data['CUSTOMER_ID'].unique())
+#selected_customer = st.sidebar.text_input("Enter Customer ID")
 
 st.sidebar.info("""Please note that this dashboard is a prototype. 
                 Users are advised that the tool may contain errors, 
@@ -93,7 +94,7 @@ with st.sidebar:
                 #<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/2048px-Instagram_logo_2016.svg.png" 
                 #width="30" height="30"></a>""", unsafe_allow_html=True)
 
-st.subheader("⚡ Risk Assessment Summary")
+st.subheader("⚡ Financial Risk Assessment Summary")
 customer_data = data[data['CUSTOMER_ID'] == selected_customer].iloc[0]
 resilience_score = customer_data['Resilience_Score']
 risk_level = classify_risk(resilience_score)
