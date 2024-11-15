@@ -7,7 +7,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-st.title("🤖 What is ERICA? ")
+st.title("🤖 What is ERICA?")
 
 st.info("💡 **Economic Resilience Index for Capacity Adaptation or ERICA** is designed to assess and enhance the financial resilience of MSMEs, particularly in underserved regions and vulnerable sectors like agriculture. The goal is to help these MSMEs withstand economic shocks such as crises or natural disasters by providing financial institutions with a comprehensive understanding of the extent of each MSME’s resilience.")
 

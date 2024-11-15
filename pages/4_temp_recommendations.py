@@ -8,9 +8,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-data = pd.read_csv('Resilience Score Analysis Unscaled.csv')
+unscaled_data = pd.read_csv('Resilience Score Analysis Unscaled.csv')
 
-customer_data = data[data['CUSTOMER_ID'] == 17582714.2857]
+customer_data = unscaled_data[unscaled_data['CUSTOMER_ID'] == 17582714.2857]
 
 # Customer data variables
 monthly_income = customer_data['MONTHLY_INCOME'].values[0] if 'MONTHLY_INCOME' in customer_data else 0
@@ -159,15 +159,15 @@ concepts = {
 
 for concept, features in concepts.items():
     feature_data = adjusted_customer_data[features]
-    z_scores = (feature_data - data[features].mean()) / data[features].std()  # Standardize
+    z_scores = (feature_data - unscaled_data[features].mean()) / unscaled_data[features].std()  # Standardize
     adjusted_scores[f'{concept}_Score'] = z_scores.mean()
 
 # Recalculate resilience score
 adjusted_resilience_score = sum(value.mean() if isinstance(value, pd.Series) else float(value) for value in adjusted_scores.values()) / len(concepts)
 
 # Scale the new resilience score
-min_resilience = data['Resilience_Score'].min()
-max_resilience = data['Resilience_Score'].max()
+min_resilience = unscaled_data['Resilience_Score'].min()
+max_resilience = unscaled_data['Resilience_Score'].max()
 adjusted_resilience_score_scaled = (adjusted_resilience_score - min_resilience) / (max_resilience - min_resilience)
 
 # Compute resilience boost
