@@ -67,6 +67,6 @@ st.write("""
 st.title("🐟 About MisSME?")
 
 st.write("""
-         MiSSME? (pronounced as miss me? as a play on words of MSMS) is a group of four college students from Ateneo de Manila University.
+         MiSSME? (pronounced as miss me? as a play on words of MSMEs) is a group of four college students from Ateneo de Manila University.
          The team comprises of Zaidamin Haron (3 BS CTM), Andrea Senson (4 BS AMDSc), Rafael Tagulao (4 BS AMDSc), and Dianne Yumol (4 BS AMDSc).
          """)
