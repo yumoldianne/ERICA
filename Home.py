@@ -594,7 +594,7 @@ if auto_loan_indicator > 0 or housing_loan_indicator > 0:
 st.subheader("Future Loans")
 
 # Simulate feature adjustments
-adjusted_customer_data = customer_data.copy()
+adjusted_customer_data = rcustomer_data.copy()
 adjusted_customer_data['TOTAL_BALANCE'] += recommended_loan_amount  # Increase liquidity
 adjusted_customer_data['CURRENT_MONTH_BILLING'] += future_monthly_installment  # Add loan installment
 adjusted_customer_data['LOAN_AMOUNT'] += recommended_loan_amount  # New loan amount
@@ -635,12 +635,10 @@ for concept, features in concepts.items():
 
 # Recalculate resilience score
 adjusted_resilience_score = sum(value.mean() if isinstance(value, pd.Series) else float(value) for value in adjusted_scores.values()) / len(concepts)
-
 # Scale the new resilience score
 min_resilience = unscaled_data['Resilience_Score'].min()
 max_resilience = unscaled_data['Resilience_Score'].max()
 adjusted_resilience_score_scaled = (adjusted_resilience_score - min_resilience) / (max_resilience - min_resilience)
-
 # Compute resilience boost
 original_resilience_score = rcustomer_data['Resilience_Score']
 resilience_boost = adjusted_resilience_score_scaled - original_resilience_score
