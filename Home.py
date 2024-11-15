@@ -156,7 +156,7 @@ for factor, threshold in factor_thresholds.items():
 
 
 
-
+st.divider()
 
 
 
@@ -394,7 +394,7 @@ with tab3:
 
 
 
-
+st.divider()
 
 
 
@@ -475,6 +475,7 @@ else:
 
 
 
+st.divider()
 
 
 
@@ -597,7 +598,7 @@ adjusted_customer_data = customer_data.copy()
 adjusted_customer_data['TOTAL_BALANCE'] += recommended_loan_amount  # Increase liquidity
 adjusted_customer_data['CURRENT_MONTH_BILLING'] += future_monthly_installment  # Add loan installment
 adjusted_customer_data['LOAN_AMOUNT'] += recommended_loan_amount  # New loan amount
-adjusted_customer_data['LOAN_BEHAVIOR'] = 4  # Improved reliability
+adjusted_customer_data['LOAN_BEHAVIOR'] = 4 
 
 # Recompute concept scores
 adjusted_scores = {}
